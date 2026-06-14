@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <!-- Prevent browsers (especially iOS Safari) from serving a stale cached page -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>AR Experience</title>
+  <link rel="stylesheet" href="./style.css?v=3" />
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body>
+
+  <!-- Onboarding splash overlay -->
+  <div id="onboarding" role="dialog" aria-live="polite">
+    <div class="onboarding-card">
+      <h1 data-i18n="title">Welcome</h1>
+      <p id="onboarding-message" data-i18n="instructions">
+        Grant camera permissions and point your camera at the image to see the magic!
+      </p>
+      <button id="start-btn" data-i18n="start" type="button">Start Camera</button>
+      <p id="onboarding-status" class="status" hidden></p>
+    </div>
+  </div>
+
+  <!-- Exit button -->
+  <button id="exit-btn" aria-label="Close" title="Close">✕</button>
+
+  <!-- Scanning instruction overlay (shown after camera/AR is ready) -->
+  <div id="scanning-overlay" hidden>
+    <div id="scan-frame">
+      <img id="scan-target-img" src="./Mayday-scan.png" alt="Target image" />
+      <div class="scan-corner tl"></div>
+      <div class="scan-corner tr"></div>
+      <div class="scan-corner bl"></div>
+      <div class="scan-corner br"></div>
+      <div class="scan-line"></div>
+    </div>
+    <p id="scanning-label" data-i18n="scanInstruction">Point your camera at this image</p>
+  </div>
+
+  <!-- Persistent "target lost" hint banner -->
+  <div id="hint" hidden>
+    <span data-i18n="lost">Point your camera at the image</span>
+  </div>
+
+  <a-scene
+    mindar-image="imageTargetSrc: ./mayday.mind; autoStart: false; uiScanning: no; uiLoading: no; uiError: no; filterMinCF: 0.001; filterBeta: 50;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
+  >
+    <a-assets>
+      <video id="video1" src="./assets/video1.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous" muted></video>
+      <video id="video2" src="./assets/video2.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous" muted></video>
+      <video id="video3" src="./assets/video3.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous" muted></video>
+      <video id="video4" src="./assets/video4.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous" muted></video>
+      <video id="video5" src="./assets/video5.mp4" preload="auto" loop playsinline webkit-playsinline crossorigin="anonymous" muted></video>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-camera>
+
+    <a-entity video-carousel mindar-image-target="targetIndex: 0">
+      <a-entity class="carousel-slot" geometry="primitive: plane; width: 1; height: 2" material="shader: flat; src: #video1; transparent: true; opacity: 1" position="0 0 0"></a-entity>
+      <a-entity class="carousel-slot" geometry="primitive: plane; width: 1; height: 2" material="shader: flat; src: #video2; transparent: true; opacity: 1" position="0 0 0"></a-entity>
+      <a-entity class="carousel-slot" geometry="primitive: plane; width: 1; height: 2" material="shader: flat; src: #video3; transparent: true; opacity: 1" position="0 0 0"></a-entity>
+      <a-entity class="carousel-slot" geometry="primitive: plane; width: 1; height: 2" material="shader: flat; src: #video4; transparent: true; opacity: 1" position="0 0 0"></a-entity>
+      <a-entity class="carousel-slot" geometry="primitive: plane; width: 1; height: 2" material="shader: flat; src: #video5; transparent: true; opacity: 1" position="0 0 0"></a-entity>
+    </a-entity>
+  </a-scene>
+
+  <script src="./app.js?v=5"></script>
+</body>
+</html>
